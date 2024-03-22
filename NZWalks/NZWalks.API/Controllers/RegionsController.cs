@@ -22,7 +22,6 @@ namespace NZWalks.API.Controllers
             _mapper = mapper;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -34,7 +33,7 @@ namespace NZWalks.API.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetRegionById([FromRoute] Guid id)
         {
-            var regionDomain = await _regionRepository.GetRegionByIdAsync(id);
+            var regionDomain = await _regionRepository.GetByIdAsync(id);
 
             if(regionDomain == null)
             {
@@ -51,7 +50,7 @@ namespace NZWalks.API.Controllers
             var regionDomainModel = _mapper.Map<Region>(addRegionRequestDto);
 
             // Use Domain Model to create Region
-            regionDomainModel = await _regionRepository.CreateRegionAsync(regionDomainModel);
+            regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
             
             // Map Domain Model back to DTO
             var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
@@ -66,7 +65,7 @@ namespace NZWalks.API.Controllers
             var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
             
             // Check if region exists
-            regionDomainModel = await _regionRepository.UpdateRegionAsync(id, regionDomainModel);
+            regionDomainModel = await _regionRepository.UpdateAsync(id, regionDomainModel);
             
             if(regionDomainModel == null)
             {
@@ -79,7 +78,7 @@ namespace NZWalks.API.Controllers
         [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteRegion([FromRoute] Guid id)
         {
-            var regionDomainModel = await _regionRepository.DeleteRegionAsync(id);
+            var regionDomainModel = await _regionRepository.DeleteAsync(id);
             if(regionDomainModel == null)
             {
                 return NotFound();
